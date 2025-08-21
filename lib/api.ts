@@ -1,48 +1,6 @@
 // lib/api.ts
 
-// export type Note = {
-//   id: string;
-//   title: string;
-//   content: string;
-//   categoryId: string;
-//   userId: string;
-//   createdAt: string;
-//   updatedAt: string;
-// };
-
-// export type NoteListResponse = {
-//   notes: Note[];
-//   total: number;
-// };
-
-// axios.defaults.baseURL = "https://next-docs-api.onrender.com";
-
-// export const getSingleNote = async (id: string) => {
-//   const res = await axios.get<Note>(`/notes/${id}`);
-//   return res.data;
-// };
-
-
-// export type Category = {
-//   id: string;
-//   name: string;
-//   description: string;
-//   createdAt: string;
-//   updatedAt: string;
-// };
-
-// export const getCategories = async () => {
-//   const res = await axios<Category[]>('/categories');
-//   return res.data;
-// };
-
-// export const getNotes = async (categoryId?: string) => {
-//   const res = await axios.get<NoteListResponse>('/notes', {
-//     params: { categoryId },
-//   });
-//   return res.data;
-// };
-
+// lib/api.ts
 import axios from 'axios';
 import type { Note, NoteTag } from '../app/types/note';
 
@@ -59,56 +17,65 @@ export interface NewNote {
   tag: NoteTag;
 }
 
+export interface CategoryType {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+const getAuthHeader = () => {
+  const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+  return { Authorization: `Bearer ${myKey}` };
+};
+
+// Отримати нотатки з можливістю фільтрувати за тегом
 export const fetchNotes = async (
   page: number,
-  search: string,
-  perPage: number = 12,
-) => {
-  const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+  search: string = '',
+  tag?: string,
+  perPage: number = 12
+): Promise<FetchNotesResponse> => {
+  const params: Record<string, string | number> = { page, perPage };
 
-  const params: Record<string, string | number> = {
-    page,
-    perPage,
-  };
-
-  if (search.trim()) {
-    params.search = search.trim();
-  }
+  if (search.trim()) params.search = search.trim();
+  if (tag && tag.toLowerCase() !== 'all') params.tag = tag;
 
   const res = await axios.get<FetchNotesResponse>('/notes', {
     params,
-    headers: { Authorization: `Bearer ${myKey}` },
+    headers: getAuthHeader(),
   });
 
   return res.data;
 };
 
-export const createNote = async (newNote: NewNote) => {
-  const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-
+// Створити нову нотатку
+export const createNote = async (newNote: NewNote): Promise<Note> => {
   const res = await axios.post<Note>('/notes', newNote, {
-    headers: { Authorization: `Bearer ${myKey}` },
+    headers: getAuthHeader(),
   });
-
   return res.data;
 };
 
-export const deleteNote = async (noteId: string) => {
-  const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-
+// Видалити нотатку
+export const deleteNote = async (noteId: string): Promise<Note> => {
   const res = await axios.delete<Note>(`/notes/${noteId}`, {
-    headers: { Authorization: `Bearer ${myKey}` },
+    headers: getAuthHeader(),
   });
-
   return res.data;
 };
 
-export const getSingleNote = async (id: string) => {
-  const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-  
+// Отримати одну нотатку за id
+export const getSingleNote = async (id: string): Promise<Note> => {
   const res = await axios.get<Note>(`/notes/${id}`, {
-    headers: { Authorization: `Bearer ${myKey}` },
+    headers: getAuthHeader(),
   });
-  
   return res.data;
+};
+
+// Отримати всі категорії/теги
+export const getCategories = async (): Promise<CategoryType[]> => {
+  const { data } = await axios.get<CategoryType[]>('/categories');
+  return data;
 };
