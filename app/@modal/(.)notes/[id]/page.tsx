@@ -1,7 +1,5 @@
 // app/@modal/(.)notes/[id]/page.tsx
 
-
-// app/@modal/(.)notes/[id]/page.tsx
 import { getSingleNote } from '@/lib/api';
 import Modal from '@/components/Modal/Modal';
 import { useRouter } from 'next/navigation';

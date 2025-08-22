@@ -25,6 +25,7 @@ export default function NotesClient({
   initialPage,
   initialData,
   initialQuery,
+  selectedTag,
 }: NotesClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
@@ -46,9 +47,11 @@ export default function NotesClient({
     setCurrentPage(1);
   };
 
+const searchTag = selectedTag?.toLowerCase() === 'all' ? undefined : selectedTag;
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ['notes', currentPage, debouncedSearchQuery],
-    queryFn: () => fetchNotes(currentPage, debouncedSearchQuery),
+    queryFn: () => fetchNotes(currentPage, debouncedSearchQuery, searchTag),
     placeholderData: keepPreviousData,
     initialData:
     currentPage === initialPage && searchQuery === initialQuery

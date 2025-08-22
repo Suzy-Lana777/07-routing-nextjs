@@ -1,29 +1,24 @@
 // app/notes/filter/@sidebar/default.tsx
 
 import Link from 'next/link';
-import { getCategories } from '@/lib/api';
-import css from "./SideBarNotes.module.css"
+import css from "./SideBarNotes.module.css";
+import type { NoteTag } from '@/types/note';
 
-export default async function NotesSidebar() {
-  const categories = await getCategories();
+const tags: NoteTag[] = ["Todo", "Work", "Personal", "Meeting", "Shopping"];
 
-  return (
-    <ul className={css.menuList}>
-      <li className={css.menuItem}>
-        <Link href="/notes/filter/All" className={css.menuLink}>
-          All notes
-        </Link>
-      </li>
-      {categories?.map((category) => (
-        <li key={category.id} className={css.menuItem}>
-          <Link
-            href={`/notes/filter/${encodeURIComponent(category.name)}`}
-            className={css.menuLink}
-          >
-            {category.name}
+const NotesSidebar = () => (
+  <ul className={css.menuList}>
+    {["All notes", ...tags].map(tag => {
+      const href = tag === "All notes" ? "/notes/filter/all" : `/notes/filter/${tag}`;
+      return (
+        <li key={tag} className={css.menuItem}>
+          <Link href={href} className={css.menuLink}>
+            {tag}
           </Link>
         </li>
-      ))}
-    </ul>
-  );
-}
+      );
+    })}
+  </ul>
+);
+
+export default NotesSidebar;
