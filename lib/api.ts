@@ -53,7 +53,6 @@ export const fetchNotes = async (
   }
 };
 
-// Створити нову нотатку
 export const createNote = async (newNote: NewNote): Promise<Note> => {
    const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
@@ -67,7 +66,6 @@ export const createNote = async (newNote: NewNote): Promise<Note> => {
   }
 };
 
-// Видалити нотатку
 export const deleteNote = async (noteId: string): Promise<Note> => {
    const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
