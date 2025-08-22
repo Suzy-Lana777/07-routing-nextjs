@@ -1,16 +1,17 @@
-'use client';
+
+"use client"; 
 
 import { useState } from 'react';
 import Link from 'next/link';
 import css from './TagsMenu.module.css';
-import { CategoryType } from '@/lib/api';
+import { NoteTag } from "@/app/types/note";
 
-type TagsMenuProps = {
-  categories: CategoryType[];
-};
+// Список тегів для нотаток
+const tags: NoteTag[] = ["Todo", "Work", "Personal", "Meeting", "Shopping"];
 
-export default function TagsMenu({ categories }: TagsMenuProps) {
+export default function TagsMenu() {
   const [isOpen, setIsOpen] = useState(false);
+
   const toggle = () => setIsOpen(!isOpen);
 
   return (
@@ -23,20 +24,24 @@ export default function TagsMenu({ categories }: TagsMenuProps) {
         <ul className={css.menuList}>
           {/* Посилання на всі нотатки */}
           <li className={css.menuItem}>
-            <Link href="/notes/filter/all" onClick={toggle} className={css.menuLink}>
+            <Link 
+              href="/notes/filter/all" 
+              className={css.menuLink} 
+              onClick={toggle}
+            >
               All notes
             </Link>
           </li>
 
-          {/* Список тегів */}
-          {categories.map((category) => (
-            <li key={category.id} className={css.menuItem}>
+          {/* Посилання на кожен тег */}
+          {tags.map(tag => (
+            <li key={tag} className={css.menuItem}>
               <Link
-                href={`/notes/filter/${category.id}`}
-                onClick={toggle}
+                href={`/notes/filter/${tag}`}
                 className={css.menuLink}
+                onClick={toggle}
               >
-                {category.name}
+                {tag}
               </Link>
             </li>
           ))}

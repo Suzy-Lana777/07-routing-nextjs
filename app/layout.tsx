@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer/Footer"; // 👈 обов'язково імпорт
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 
 // 🟢 Додаємо оголошення шрифтів
@@ -39,14 +40,9 @@ export default function RootLayout({
             {children}
             {modal}
           </main>
-          <footer>
-            <p>
-              Created <time dateTime="2025">2025</time>
-            </p>
-          </footer>
+          <Footer /> {/* 👈 тут футер */}
         </TanStackProvider>
       </body>
     </html>
   );
 }
-

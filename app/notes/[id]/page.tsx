@@ -17,10 +17,10 @@ export default async function NoteDetails({ params }: Props) {
     queryFn: () => getSingleNote(id),
   });
 
-  // або передай id у клієнтський компонент, або читай його через useParams() всередині
+  
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NoteDetailsClient /* id={id} */ />
+      <NoteDetailsClient />
     </HydrationBoundary>
   );
 }

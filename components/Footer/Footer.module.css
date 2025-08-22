@@ -1,6 +1,6 @@
 /* components/Footer.module.css */
 
-.footer {
+  .footer {
   padding: 20px;
   background-color: #f0f0f0;
   text-align: center;
@@ -15,12 +15,12 @@
   gap: 20px;
 }
 
-.footer Link {
+.footer a {
   color: #226ec5;
   font-weight: 600;
   text-decoration: none;
 }
 
-.footer Link:hover {
+.footer a:hover {
   text-decoration: underline;
-}
+}  
