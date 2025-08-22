@@ -1,4 +1,4 @@
-// // lib/api.ts
+// lib/api.ts
 
 import axios from 'axios';
 import type { Note, NoteTag } from '../app/types/note';
@@ -33,55 +33,84 @@ const getAuthHeader = () => {
 export const fetchNotes = async (
   page: number,
   search: string,
-  tag?: string,
-  perPage: number = 12
+  tag?: string
 ): Promise<FetchNotesResponse> => {
-  const params: Record<string, string | number> = {
-    page,
-    perPage,
-    ...(search.trim() && { search: search.trim() }),
-    ...(tag && tag.toLowerCase() !== 'all' && { tag }),
-  };
+  const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
-  const res = await axios.get<FetchNotesResponse>('/notes', {
-    params,
-    headers: getAuthHeader(),
-  });
+  try {
+    const res = await axios.get<FetchNotesResponse>('/notes', {
+      params: {
+        page,
+        ...(search.trim() && { search: search.trim() }),
+        ...(tag && tag.toLowerCase() !== 'all' && { tag }),
+      },
+      headers: { Authorization: `Bearer ${myKey}` },
+    });
 
-  return res.data;
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 // Створити нову нотатку
 export const createNote = async (newNote: NewNote): Promise<Note> => {
-  const res = await axios.post<Note>('/notes', newNote, {
-    headers: getAuthHeader(),
-  });
-  return res.data;
+   const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+
+  try {
+    const res = await axios.post<Note>('/notes', newNote, {
+      headers: getAuthHeader(),
+    });
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 // Видалити нотатку
 export const deleteNote = async (noteId: string): Promise<Note> => {
-  const res = await axios.delete<Note>(`/notes/${noteId}`, {
-    headers: getAuthHeader(),
-  });
-  return res.data;
-};
+   const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+
+  try {
+    const res = await axios.delete<Note>(`/notes/${noteId}`, {
+        headers: { Authorization: `Bearer ${myKey}` },
+    });
+
+    return res.data;
+    } catch (error) {
+
+        throw error;
+    }    
+}
 
 // Отримати одну нотатку за id
 export const getSingleNote = async (id: string): Promise<Note> => {
-  const res = await axios.get<Note>(`/notes/${id}`, {
-    headers: getAuthHeader(),
-  });
-  return res.data;
+  const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+   try {
+    const res = await axios.get<Note>(`/notes/${id}`, {
+        headers: { Authorization: `Bearer ${myKey}` },
+    });
+
+    return res.data;
+    } catch (error) {
+    
+        throw error;
+    }
+}
+
+export const getCategories = async (): Promise<CategoryType[]> => {
+  try {
+    const res = await axios.get<CategoryType[]>('/categories', {
+      headers: getAuthHeader(),
+    });
+    return res.data;
+  } catch (error) {
+    console.error( error);
+    return []; // щоб фронт не падав
+  }
 };
 
-// Отримати всі категорії/теги
-export const getCategories = async (): Promise<CategoryType[]> => {
-  const res = await axios.get<CategoryType[]>('/categories', {
-    headers: getAuthHeader(),
-  });
-  return res.data;
-};
+
 
 
 // lib/api.ts
