@@ -18,6 +18,7 @@ interface NotesClientProps {
   initialPage: number;
   initialData: FetchNotesResponse;
   initialQuery: string;
+  selectedTag?: string;
 }
 
 export default function NotesClient({
