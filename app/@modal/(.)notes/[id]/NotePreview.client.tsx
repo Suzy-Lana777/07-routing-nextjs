@@ -1,6 +1,6 @@
 "use client"
 
-import css from "./NotePreview.module.css"
+import css from "./NotePreview.client.module.css"
 import { getSingleNote } from '@/lib/api';
 import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/navigation";
