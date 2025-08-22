@@ -1,25 +1,52 @@
 // app/@modal/(.)notes/[id]/page.tsx
 
-import { getSingleNote } from '@/lib/api';
-import Modal from '@/components/Modal/Modal';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+// import { getSingleNote } from '@/lib/api';
+// import Modal from '@/components/Modal/Modal';
+// import { useRouter } from 'next/navigation';
+// import React from 'react';
 
-type Props = {
-  params: { id: string };
+// type Props = {
+//   params: { id: string };
+// };
+
+// export default async function NotePreview({ params }: Props) {
+//   const { id } = params;
+//   const note = await getSingleNote(id);
+
+//   const router = useRouter();
+//   const handleClose = () => router.back();
+
+//   return (
+//     <Modal onClose={handleClose}>
+//       <h2>{note.title}</h2>
+//       <p>{note.content}</p>
+//     </Modal>
+//   );
+// }
+
+import { getSingleNote } from "@/lib/api";
+import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import NotePreviewClient from "./NotePreview.client";
+
+interface NotePreviewProps {
+    params: Promise<{ id: string }>;
 };
 
-export default async function NotePreview({ params }: Props) {
-  const { id } = params;
-  const note = await getSingleNote(id);
+const NotePreview = async ({ params }: NotePreviewProps) => {
+    const { id } = await params;
 
-  const router = useRouter();
-  const handleClose = () => router.back();
+    const queryClient = new QueryClient();
 
-  return (
-    <Modal onClose={handleClose}>
-      <h2>{note.title}</h2>
-      <p>{note.content}</p>
-    </Modal>
-  );
-}
+    await queryClient.prefetchQuery({
+        queryKey: ["note", id],
+        queryFn: () => getSingleNote(id),
+    })
+
+    return (
+        <HydrationBoundary state={dehydrate(queryClient)}>
+            <NotePreviewClient id={id} />
+        </HydrationBoundary>
+    );
+};
+
+export default NotePreview;
