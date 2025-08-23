@@ -108,4 +108,5 @@ export const getCategories = async (): Promise<CategoryType[]> => {
   }
 };
 
+export type { Note, NoteTag };
 
