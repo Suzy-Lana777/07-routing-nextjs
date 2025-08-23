@@ -1,15 +1,41 @@
 // app/notes/[id]/page.tsx
 
-import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
+// import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
+// import { getSingleNote } from "@/lib/api";
+// import NoteDetailsClient from "./NoteDetails.client";
+
+// type NoteDetailsProps = {
+//     params: Promise<{ id: string }>;
+// }
+
+// const NoteDetails = async ({ params }: NoteDetailsProps) => {
+//     const { id } = await params;
+
+//   const queryClient = new QueryClient();
+
+//   await queryClient.prefetchQuery({
+//     queryKey: ["note", id],
+//     queryFn: () => getSingleNote(id),
+//   });
+
+  
+//   return (
+//     <HydrationBoundary state={dehydrate(queryClient)}>
+//       <NoteDetailsClient id={id}/>
+//     </HydrationBoundary>
+//   );
+// }
+
 import { getSingleNote } from "@/lib/api";
+import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import NoteDetailsClient from "./NoteDetails.client";
 
-type NoteDetailsProps = {
-    params: Promise<{ id: string }>;
+interface NoteDetailsProps {
+  params: { id: string };
 }
 
 const NoteDetails = async ({ params }: NoteDetailsProps) => {
-    const { id } = await params;
+  const { id } = params;
 
   const queryClient = new QueryClient();
 
@@ -18,11 +44,11 @@ const NoteDetails = async ({ params }: NoteDetailsProps) => {
     queryFn: () => getSingleNote(id),
   });
 
-  
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NoteDetailsClient id={id}/>
+      <NoteDetailsClient id={id} />
     </HydrationBoundary>
   );
-}
+};
 
+export default NoteDetails;

@@ -28,5 +28,5 @@ const NotePreview = async ({ params }: NotePreviewProps) => {
 
 export default NotePreview;
 
-    
-   
+  
+
