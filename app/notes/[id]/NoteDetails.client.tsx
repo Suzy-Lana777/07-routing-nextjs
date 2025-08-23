@@ -54,7 +54,7 @@
 "use client";
 
 import React from "react";
-import css from "./NoteDetailsClient.module.css"; // переконайся, що файл існує
+import css from "./NoteDetails.page.module.css"; // переконайся, що файл існує
 import { getSingleNote } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
