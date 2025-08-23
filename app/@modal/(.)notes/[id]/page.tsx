@@ -36,7 +36,8 @@ interface NotePreviewProps {
 }
 
 const NotePreview = async ({ params }: NotePreviewProps) => {
-  const { id } = params; 
+  const { id } = params;
+
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
