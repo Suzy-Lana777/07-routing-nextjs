@@ -42,7 +42,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getSingleNote } from '@/lib/api';
 
-import css from './NoteDetails.module.css';
+import css from './NoteDetails.page.module.css';
 
 const NoteDetailsClient = () => {
   const router = useRouter();
