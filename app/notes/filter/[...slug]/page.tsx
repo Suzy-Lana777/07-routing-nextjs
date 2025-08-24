@@ -14,9 +14,7 @@ export default async function NotesPage({ params }: Props) {
   const initialPage = 1;
   const initialQuery = "";
 
-  // const initialData: FetchNotesResponse = await fetchNotes(initialPage, initialQuery, tag);
-
-let initialData: FetchNotesResponse = { notes: [], totalPages: 0 };
+  let initialData: FetchNotesResponse = { notes: [], totalPages: 0 };
 
   try {
     initialData = await fetchNotes(initialPage, initialQuery, tag);

@@ -1,7 +1,5 @@
 // app/notes/page.tsx
 
-// app/notes/page.tsx
-
 import NoteList from "@/components/NoteList/NoteList";
 import { fetchNotes } from "@/lib/api";
 
