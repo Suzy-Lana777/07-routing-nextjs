@@ -14,7 +14,16 @@ export default async function NotesPage({ params }: Props) {
   const initialPage = 1;
   const initialQuery = "";
 
-  const initialData: FetchNotesResponse = await fetchNotes(initialPage, initialQuery, tag);
+  // const initialData: FetchNotesResponse = await fetchNotes(initialPage, initialQuery, tag);
+
+let initialData: FetchNotesResponse = { notes: [], totalPages: 0 };
+
+  try {
+    initialData = await fetchNotes(initialPage, initialQuery, tag);
+  } catch (e) {
+    console.error("fetchNotes error:", e);
+    // якщо API впаде — повертаємо запасні дані
+  }
 
   return (
     <NotesClient

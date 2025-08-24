@@ -15,10 +15,20 @@ export default async function NoteDetails({ params }: NoteDetailsProps) {
 
   const queryClient = new QueryClient();
 
+  // await queryClient.prefetchQuery({
+  //   queryKey: ['note', parsedId],
+  //   queryFn: () => getSingleNote(parsedId),
+  // });
+
+  try {
   await queryClient.prefetchQuery({
     queryKey: ['note', parsedId],
     queryFn: () => getSingleNote(parsedId),
   });
+} catch (e) {
+  console.error("prefetch note error", e);
+}
+
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
